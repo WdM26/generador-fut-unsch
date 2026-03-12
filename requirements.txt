@@ -1,4 +1,3 @@
 streamlit
 xhtml2pdf
-qrcode
-Pillow
+qrcode[pil]
