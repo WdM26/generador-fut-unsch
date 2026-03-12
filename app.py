@@ -25,9 +25,12 @@ def get_image_base64(path):
     return ""
 
 def get_qr_base64(text):
-    qr = qrcode.make(text)
+    qr = qrcode.QRCode(box_size=10, border=1)
+    qr.add_data(text)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white") # Asegura el uso de PIL
     buf = BytesIO()
-    qr.save(buf, format="PNG")
+    img.save(buf, format="PNG")
     return f"data:image/png;base64,{base64.b64encode(buf.getvalue()).decode()}"
 
 def insertar_saltos(texto, max_chars=12): # Bajamos a 12 para que entre en los 90px
