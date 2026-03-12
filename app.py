@@ -6,20 +6,7 @@ import base64
 import os
 from datetime import datetime
 import re
-import textwrap
-import locale
 
-
-try:
-    locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8') 
-except:
-    try:
-        locale.setlocale(locale.LC_TIME, 'es_ES')
-    except:
-        try:
-            locale.setlocale(locale.LC_TIME, 'spanish')
-        except:
-            pass
 
 # --- CONFIGURACIÓN DE PÁGINA ---
 st.set_page_config(page_title="FUT UNSCH PROFESIONAL", page_icon="🎓", layout="wide")
@@ -275,12 +262,18 @@ with st.expander("📝 DOCUMENTOS ADJUNTOS"):
     
 # Cuadro 10
 f_lug = st.sidebar.text_input("Lugar", value="Ayacucho")
-f_fec = st.sidebar.text_input("Fecha", value=datetime.now().strftime("%d de %B de %Y"))
+# Generamos la fecha base
+fecha_base = datetime.now().strftime("%d de %B de %Y")
 # TRADUCTOR MANUAL (Cópialo tal cual si lo anterior falla)
-f_fec = f_fec.replace("January", "enero").replace("February", "febrero").replace("March", "marzo") \
-             .replace("April", "abril").replace("May", "mayo").replace("June", "junio") \
-             .replace("July", "julio").replace("August", "agosto").replace("September", "septiembre") \
-             .replace("October", "octubre").replace("November", "noviembre").replace("December", "diciembre")
+# TU TRADUCTOR MANUAL (Es la mejor solución para Streamlit)
+f_fec = fecha_base.replace("January", "enero").replace("February", "febrero").replace("March", "marzo") \
+               .replace("April", "abril").replace("May", "mayo").replace("June", "junio") \
+               .replace("July", "julio").replace("August", "agosto").replace("September", "septiembre") \
+               .replace("October", "octubre").replace("November", "noviembre").replace("December", "diciembre")
+
+f_fec_input = st.sidebar.text_input("Fecha", value=f_fec)
+
+
 if st.button("🚀 GENERAR FUT", use_container_width=True):
     if f_nom and f_dni:
         lista_final_para_pdf = st.session_state["mis_docs"].replace("\n", "<br>")
